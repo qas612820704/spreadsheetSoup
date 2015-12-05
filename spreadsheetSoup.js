@@ -1,12 +1,13 @@
 // 1w9vTUKWXdQoz5oaDBlhIVcCst8knaGzsAcKBhYSsZr0
-function SpreadsheetSoup(key, callback) {
+function SpreadsheetSoup(key, sheet, callbackSucess, callbackError) {
   this.url = '';
   if(key) {
-    this.url = 'https://spreadsheets.google.com/feeds/list/'+ key+'/1/public/values';
+    this.url = 'https://spreadsheets.google.com/feeds/list/'+ key+'/'+ sheet +'/public/values';
   }
   this.data = [];
   this.feed = {};
-  this.callback = callback;
+  this.callbackSucess = callbackSucess;
+  this.callbackError = callbackError;
   this.sendRequest();
 };
 SpreadsheetSoup.prototype.parser = function() {
@@ -21,7 +22,7 @@ SpreadsheetSoup.prototype.parser = function() {
       }
     }
   }
-  this.callback(this.data);
+  this.callbackSucess(this.data);
 };
 SpreadsheetSoup.prototype.sendRequest = function() {
   var that = this;
@@ -35,11 +36,16 @@ SpreadsheetSoup.prototype.sendRequest = function() {
     that.feed = feed;
     that.parser();
   })
-  .fail(function() {
-    console.log("error");
+  .fail(function(data) {
+    that.callbackError(data);
   });
 };
-// var myFunc = function(data) {
-//   console.log('myFunc', data);
+
+// var sheet = '1';
+// var mySucess = function(data) {
+//   console.log('mySucess', data);
 // }
-// var parser = new SpreadsheetSoup('1w9vTUKWXdQoz5oaDBlhIVcCst8knaGzsAcKBhYSsZr0', myFunc);
+// var myErr = function(data) {
+//   console.log('myErr', data)
+// }
+// var parser = new SpreadsheetSoup('1w9vTUKWXdQoz5oaDBlhIVcCst8knaGzsAcKBhYSsZr0', sheet, mySucess, myErr);

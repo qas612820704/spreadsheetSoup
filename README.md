@@ -13,20 +13,34 @@
 
 ```
 
+你也可以直接用gh-pages當作script連結
+
+```html
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
+  <script src="http://qas612820704.github.io/spreadsheetSoup/spreadsheetSoup.js"></script>
+
+```
+
 該怎麼用?
 
 ```js
 
-  // function SpreadsheetSoup(key, callback) { ... };
+  // function SpreadsheetSoup(key, sheet, callbackSucess, callbackError) { ... };
 
   // 官方的範例 key就是你的Spreadsheets
   var key = 'o13394135408524254648.240766968415752635'
-
-  function myCallback(data) {
+  var sheet = '1'
+  
+  function mySuccess(data) {
     console.log(data);
   };
 
-  var soup = new SpreadsheetSoup(key, myCallback);
+  function myErr(data) {
+    console.log(data);
+  }
+
+  var soup = new SpreadsheetSoup(key, sheet, mySuccess, myErr);
 
 ```
 
